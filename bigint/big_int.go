@@ -10,7 +10,7 @@ type BigInt struct {
 }
 
 func NewInt(str string) (*BigInt, error) {
-	ok, err := regexp.MatchString("(\\-)?[1-9][0-9]*", str)
+	ok, err := regexp.MatchString("^(\\-)?[1-9][0-9]*$", str)
 	if err != nil {
 		return nil, err
 	}
