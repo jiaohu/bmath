@@ -7,6 +7,7 @@ import (
 
 type BigInt struct {
 	val []byte
+	neg bool
 }
 
 func NewInt(str string) (*BigInt, error) {
@@ -17,7 +18,12 @@ func NewInt(str string) (*BigInt, error) {
 	if !ok {
 		return nil, errors.New("invalid number")
 	}
-	return &BigInt{val: []byte(str)}, nil
+	origin := []byte(str)
+	var flag bool
+	if origin[0] == 45 {
+		flag = true
+	}
+	return &BigInt{val: origin, neg: flag}, nil
 }
 
 func (b *BigInt) String() string {
@@ -25,6 +31,10 @@ func (b *BigInt) String() string {
 		return "0"
 	}
 	return string(b.val)
+}
+
+func (b *BigInt) IsNegative() bool {
+	return b.neg
 }
 
 func (b *BigInt) check() bool {

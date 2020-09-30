@@ -10,7 +10,7 @@ func Add(str *BigInt, str2 *BigInt) *BigInt {
 		temp := &BigInt{val: str.val[1:]}
 		return str2.subtract(temp)
 	} else if isStrBigThanZero && !isStr2BigThanZero {
-		temp := &BigInt{str2.val[1:]}
+		temp := &BigInt{val: str2.val[1:]}
 		return str.subtract(temp)
 	} else {
 		res := &BigInt{val: []byte("-")}
