@@ -1,7 +1,7 @@
-package operator
+package bigint
 
-func Gcd(a *BigData, b *BigData) *BigData {
-	if b.ConvertString() == "0" {
+func Gcd(a *BigInt, b *BigInt) *BigInt {
+	if b.String() == "0" {
 		return a
 	} else {
 		return Gcd(b, Module(a, b))
@@ -10,13 +10,13 @@ func Gcd(a *BigData, b *BigData) *BigData {
 
 //扩展欧几里的算法
 //计算 ax + by = 1中的x与y的整数解（a与b互质）
-func ExtGcd(a *BigData, b *BigData) (*BigData, *BigData) {
+func ExtGcd(a *BigInt, b *BigInt) (*BigInt, *BigInt) {
 	var (
-		x *BigData = &BigData{}
-		y *BigData = &BigData{}
+		x *BigInt = &BigInt{}
+		y *BigInt = &BigInt{}
 	)
-	if b.ConvertString() == "0" {
-		return &BigData{val: []byte{'1'}}, &BigData{val: []byte{'0'}}
+	if b.String() == "0" {
+		return &BigInt{val: []byte{'1'}}, &BigInt{val: []byte{'0'}}
 	} else {
 		tempMod := Module(a, b)
 		x, y = ExtGcd(b, tempMod)
@@ -27,6 +27,7 @@ func ExtGcd(a *BigData, b *BigData) (*BigData, *BigData) {
 
 //求模逆
 //ed mod n = 1, 其中e与n互质, 且已知
-func ModuloInverse(e *BigData, d *BigData) *BigData {
+func ModuloInverse(e *BigInt, d *BigInt) *BigInt {
 	return d
 }
+

@@ -1,99 +1,100 @@
-package operator
+package bigint
 
 import (
 	"fmt"
 	"testing"
 )
 
-func TestNewBigData(t *testing.T) {
-	_, err := NewBigData("0")
+func TestNewInt(t *testing.T) {
+	s, err := NewInt("3473892658465897239748365838758137583658368596")
 	fmt.Println(err)
+	fmt.Println(s.multiple(&BigInt{val: []byte("397483274")}).String())
 }
 
-func TestBigData_Add(t *testing.T) {
-	origin, err := NewBigData("1300000000000")
+func TestBigInt_Add(t *testing.T) {
+	origin, err := NewInt("1300000000000")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	add, err := NewBigData("20000000000")
+	add, err := NewInt("20000000000")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := Add(origin, add)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
-func TestBigData_sub(t *testing.T) {
-	first, err := NewBigData("-1")
+func TestBigInt_sub(t *testing.T) {
+	first, err := NewInt("-1")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	second, err := NewBigData("24")
+	second, err := NewInt("24")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := Subtract(first, second)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
-func TestBigData_multiple(t *testing.T) {
-	first, err := NewBigData("73891748364368348390248933948")
+func TestBigInt_multiple(t *testing.T) {
+	first, err := NewInt("73891748364368348390248933948")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	second, err := NewBigData("73891748364368348390248933948")
+	second, err := NewInt("73891748364368348390248933948")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := Multiple(first, second)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
 func TestMultiple(t *testing.T) {
-	a := &BigData{val: []byte{48}}
-	b := &BigData{val: []byte{49}}
+	a := &BigInt{val: []byte{48}}
+	b := &BigInt{val: []byte{49}}
 	res := a.multiple(b)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
 func TestDivide(t *testing.T) {
-	first, err := NewBigData("4780")
+	first, err := NewInt("4780")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	second, err := NewBigData("2")
+	second, err := NewInt("2")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := Divide(first, second)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
 func TestModule(t *testing.T) {
-	first, err := NewBigData("28026088472520")
+	first, err := NewInt("28026088472520")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	second, err := NewBigData("65537")
+	second, err := NewInt("65537")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := Module(first, second)
-	fmt.Println(res.ConvertString())
+	fmt.Println(res.String())
 }
 
 func TestMod(t *testing.T) {
@@ -101,29 +102,30 @@ func TestMod(t *testing.T) {
 }
 
 func TestFastPow(t *testing.T) {
-	first, err := NewBigData("33")
+	first, err := NewInt("33")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	second, err := NewBigData("13")
+	second, err := NewInt("13")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	third, err := NewBigData("13")
+	third, err := NewInt("13")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	res := FastPow(first, second, third)
-	fmt.Println("res.ConvertString()", res.ConvertString())
+	fmt.Println("res.String()", res.String())
 }
 
 func TestCompare(t *testing.T) {
-	temp, _ := NewBigData("28026088472520")
-	temp2, _ := NewBigData("65537000000000")
+	temp, _ := NewInt("121")
+	temp2, _ := NewInt("211")
 	fmt.Println(temp.compare(temp2))
 }
+

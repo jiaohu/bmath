@@ -1,15 +1,15 @@
-package operator
+package bigint
 
 import (
 	"errors"
 	"regexp"
 )
 
-type BigData struct {
+type BigInt struct {
 	val []byte
 }
 
-func NewBigData(str string) (*BigData, error) {
+func NewInt(str string) (*BigInt, error) {
 	ok, err := regexp.MatchString("(\\-)?[1-9][0-9]*", str)
 	if err != nil {
 		return nil, err
@@ -17,24 +17,24 @@ func NewBigData(str string) (*BigData, error) {
 	if !ok {
 		return nil, errors.New("invalid number")
 	}
-	return &BigData{val: []byte(str)}, nil
+	return &BigInt{val: []byte(str)}, nil
 }
 
-func (b *BigData) ConvertString() string {
+func (b *BigInt) String() string {
 	if b == nil {
 		return "0"
 	}
 	return string(b.val)
 }
 
-func (b *BigData) check() bool {
+func (b *BigInt) check() bool {
 	if b.val[0] == '-' {
 		return false
 	}
 	return true
 }
 
-func (b *BigData) add(str *BigData) *BigData {
+func (b *BigInt) add(str *BigInt) *BigInt {
 	originLen := len(b.val)
 	addLen := len(str.val)
 	var resultMaxLen int
@@ -102,19 +102,13 @@ func (b *BigData) add(str *BigData) *BigData {
 		}
 	}
 
-	return &BigData{val: result[firstIndex:]}
+	return &BigInt{val: result[firstIndex:]}
 }
 
-func (b *BigData) subtract(str *BigData) *BigData {
+func (b *BigInt) subtract(str *BigInt) *BigInt {
 	var isBig bool
-	strLen := len(b.val)
-	str2Len := len(str.val)
-	if strLen > str2Len {
-		isBig = true
-	} else if strLen == str2Len {
-		isBig = b.ConvertString() >= str.ConvertString()
-	}
-	result := &BigData{}
+	isBig = b.compare(str)
+	result := &BigInt{}
 	if isBig {
 		result = b.sub(b, str)
 	} else {
@@ -126,7 +120,7 @@ func (b *BigData) subtract(str *BigData) *BigData {
 	return result
 }
 
-func (b *BigData) sub(str *BigData, str2 *BigData) *BigData {
+func (b *BigInt) sub(str *BigInt, str2 *BigInt) *BigInt {
 	strLen := len(str.val)
 	str2Len := len(str2.val)
 	var (
@@ -181,10 +175,10 @@ func (b *BigData) sub(str *BigData, str2 *BigData) *BigData {
 		}
 	}
 
-	return &BigData{val: result[firstZero:]}
+	return &BigInt{val: result[firstZero:]}
 }
 
-func (b *BigData) multiple(str *BigData) *BigData {
+func (b *BigInt) multiple(str *BigInt) *BigInt {
 	strLen := len(b.val)
 	str2Len := len(str.val)
 	temp := make([]int, strLen+str2Len)
@@ -214,19 +208,19 @@ func (b *BigData) multiple(str *BigData) *BigData {
 	if len(res) == 0 {
 		res = []byte{48}
 	}
-	return &BigData{val: res}
+	return &BigInt{val: res}
 }
 
-func (b *BigData) divide(str *BigData) *BigData {
+func (b *BigInt) divide(str *BigInt) *BigInt {
 	var first byte
-	var d *BigData = &BigData{}
+	var d *BigInt = &BigInt{}
 	if !b.compare(str) {
-		return &BigData{val: []byte{48}}
+		return &BigInt{val: []byte{48}}
 	}
 	for {
 		lenDiff := len(b.val) - len(str.val)
-		var temp = &BigData{}
-		var temp2 = &BigData{}
+		var temp = &BigInt{}
+		var temp2 = &BigInt{}
 		temp.val = str.val
 		temp2.val = str.val
 		var realLen int
@@ -239,37 +233,38 @@ func (b *BigData) divide(str *BigData) *BigData {
 				break
 			}
 		}
+
 		b = b.subtract(temp2)
 		first = b.val[0]
 		if first == '-' {
 			break
 		} else {
 			if realLen != 0 {
-				var one = &BigData{val: []byte{49}}
+				var one = &BigInt{val: []byte{49}}
 				var add = one.powBase10(realLen)
 				d = d.add(add)
 			} else {
-				d = d.add(&BigData{val: []byte{byte(49)}})
+				d = d.add(&BigInt{val: []byte{byte(49)}})
 			}
 		}
 	}
 	if len(d.val) == 0 {
-		return &BigData{val: []byte{48}}
+		return &BigInt{val: []byte{48}}
 	}
 	return d
 }
 
-func (b *BigData) module(str *BigData) *BigData {
+func (b *BigInt) module(str *BigInt) *BigInt {
 	var first byte
 	var d int = 0
-	var mod *BigData = b
+	var mod *BigInt = b
 	if !b.compare(str) {
 		return mod
 	}
 	for {
 		lenDiff := len(b.val) - len(str.val)
-		var temp = &BigData{}
-		var temp2 = &BigData{}
+		var temp = &BigInt{}
+		var temp2 = &BigInt{}
 		temp.val = str.val
 		temp2.val = str.val
 		for i := 1; i <= lenDiff; i++ {
@@ -300,9 +295,9 @@ func (b *BigData) module(str *BigData) *BigData {
 				break
 			}
 		}
-		return &BigData{val: mod.val[firstNotZero:]}
+		return &BigInt{val: mod.val[firstNotZero:]}
 	} else {
-		return &BigData{val: []byte{byte(48)}}
+		return &BigInt{val: []byte{byte(48)}}
 	}
 }
 
@@ -325,16 +320,15 @@ func changeIntToByte(param int) []byte {
 	return results
 }
 
-func (b *BigData) compare(str2 *BigData) bool {
+func (b *BigInt) compare(str2 *BigInt) bool {
 	strLen := len(b.val)
 	str2Len := len(str2.val)
 	if strLen < str2Len {
 		return false
 	} else if strLen == str2Len {
-		var flag = false
+		var flag = true
 		for i := 0; i < strLen; i++ {
 			if b.val[i] > str2.val[i] {
-				flag = true
 				break
 			} else if b.val[i] == str2.val[i] {
 				continue
@@ -349,9 +343,13 @@ func (b *BigData) compare(str2 *BigData) bool {
 	}
 }
 
-func (b *BigData) powBase10(len int) *BigData {
+func (b *BigInt) powBase10(len int) *BigInt {
 	for i := 1; i <= len; i++ {
 		b.val = append(b.val, byte(48))
 	}
 	return b
+}
+
+func (b *BigInt) GetValue() []byte {
+	return b.val
 }
