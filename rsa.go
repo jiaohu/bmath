@@ -1,7 +1,7 @@
 package bmath
 
 import (
-	"bmath/bigint"
+	"github.com/jiaohu/bmath/bigint"
 )
 
 type RSAKey struct {
