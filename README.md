@@ -12,6 +12,7 @@ go get github.com/jiaohu/bmath
 ```
 import (
 	"fmt"
+    "github.com/jiaohu/bmath"
 	"github.com/jiaohu/bmath/bigint"
 )
 
@@ -45,8 +46,7 @@ func main() {
     q, _ := bigint.NewInt("4202321")
     e, _ := bigint.NewInt("65537")
 	pub, self := bmath.GenRSAKey(p, q, e)
-	pub.Key.String() // pub key
-	self.Key.String()
-	pub.N.String()
+	fmt.Println(pub.Key)
+	fmt.Println(self.Key)
 }
 ```
