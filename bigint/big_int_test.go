@@ -43,6 +43,7 @@ func TestBigInt_sub(t *testing.T) {
 }
 
 func TestBigInt_multiple(t *testing.T) {
+	// 5459990476343132489621253077746345103081986255550466866704
 	first, err := NewInt("73891748364368348390248933948")
 	if err != nil {
 		fmt.Println(err)
