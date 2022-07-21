@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/jiaohu/bmath/base"
 	"github.com/jiaohu/bmath/bigint"
-	"regexp"
 )
 
 type BigFloat struct {
@@ -14,24 +13,24 @@ type BigFloat struct {
 }
 
 func NewFloat(str string) (*BigFloat, error) {
-	ok, err := regexp.MatchString("^(\\-)?(([0]{1})|([1-9][0-9]*))(\\.){1}[0-9]*[1-9]$", str)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, errors.New("invalid number")
-	}
 	origin := []byte(str)
 	var accuracy int
-	var flag bool = false
+	var flag = false
 	if origin[0] == base.NegativeFlag {
 		flag = true
 	}
 
+	pointNumer := 0
 	for i, v := range origin {
+		if i == 0 {
+			continue
+		}
 		if v == base.NumberPoint {
+			pointNumer += 1
+			if pointNumer > 1 {
+				return nil, errors.New("not invalid float number string")
+			}
 			accuracy = len(origin) - i - 1
-			break
 		}
 	}
 	return &BigFloat{val: origin, accuracy: accuracy, neg: flag}, nil
@@ -48,14 +47,14 @@ func (b *BigFloat) IsNegative() bool {
 	return b.neg
 }
 
-func (b *BigFloat) check() bool {
+func (b *BigFloat) Check() bool {
 	if b.val[0] == '-' {
 		return false
 	}
 	return true
 }
 
-func (b *BigFloat) add(str *BigFloat) *BigFloat {
+func (b *BigFloat) Add(str *BigFloat) *BigFloat {
 	originLen := len(b.val)
 	addLen := len(str.val)
 	var resultMaxLen int
@@ -154,7 +153,7 @@ func (b *BigFloat) add(str *BigFloat) *BigFloat {
 	return &BigFloat{val: result[firstIndex:], accuracy: accuracy, neg: false}
 }
 
-func (b *BigFloat) subtract(str *BigFloat) *BigFloat {
+func (b *BigFloat) Subtract(str *BigFloat) *BigFloat {
 	var acc int = b.accuracy
 	if b.accuracy > str.accuracy {
 		for i := 1; i <= (b.accuracy - str.accuracy); i++ {
@@ -248,7 +247,7 @@ func (b *BigFloat) sub(str *BigFloat) *BigFloat {
 	}
 }
 
-func (b *BigFloat) multiple(str *BigFloat) *BigFloat {
+func (b *BigFloat) Multiple(str *BigFloat) *BigFloat {
 	acc := b.accuracy + str.accuracy
 	var (
 		first  []byte
@@ -283,7 +282,8 @@ func (b *BigFloat) multiple(str *BigFloat) *BigFloat {
 	}
 }
 
-func (b *BigFloat) divide(str *BigFloat) *BigFloat {
+func (b *BigFloat) Divide(str *BigFloat) *BigFloat {
+
 	return nil
 }
 

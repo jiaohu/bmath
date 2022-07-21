@@ -8,6 +8,7 @@ func Gcd(a *BigInt, b *BigInt) *BigInt {
 	}
 }
 
+// ExtGcd
 //扩展欧几里的算法
 //计算 ax + by = 1中的x与y的整数解（a与b互质）
 func ExtGcd(a *BigInt, b *BigInt) (*BigInt, *BigInt) {
@@ -25,9 +26,9 @@ func ExtGcd(a *BigInt, b *BigInt) (*BigInt, *BigInt) {
 	}
 }
 
-//求模逆
-//ed mod n = 1, 其中e与n互质, 且已知
+// ModuloInverse
+/// 求模逆
+/// ed mod n = 1, 其中e与n互质, 且已知
 func ModuloInverse(e *BigInt, d *BigInt) *BigInt {
 	return d
 }
-

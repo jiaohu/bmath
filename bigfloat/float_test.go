@@ -16,6 +16,20 @@ func TestNewFloat(t *testing.T) {
 	fmt.Println(f.neg)
 }
 
+// BenchmarkName-8   	  232155	      5137 ns/op
+func BenchmarkName(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NewFloat("-111000.0000003")
+	}
+}
+
+// BenchmarkName2-8   	28090694	        42.65 ns/op
+func BenchmarkName2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NewFloat2("-111000.0000003")
+	}
+}
+
 func TestAdd(t *testing.T) {
 	f, err := NewFloat("111000.0000003")
 	if err != nil {
@@ -23,7 +37,7 @@ func TestAdd(t *testing.T) {
 		return
 	}
 	f2, _ := NewFloat("1111.01")
-	f3 := f.add(f2)
+	f3 := f.Add(f2)
 	fmt.Println(f3)
 	fmt.Println(f3.accuracy)
 }
@@ -35,7 +49,7 @@ func TestSub(t *testing.T) {
 		return
 	}
 	f2, _ := NewFloat("111000.0000003")
-	fmt.Println(f.subtract(f2).String())
+	fmt.Println(f.Subtract(f2).String())
 }
 
 func TestSub2(t *testing.T) {
@@ -45,7 +59,7 @@ func TestSub2(t *testing.T) {
 		return
 	}
 	f2, _ := NewFloat("1111.01")
-	fmt.Println(f.subtract(f2).String())
+	fmt.Println(f.Subtract(f2).String())
 }
 
 func TestCompare(t *testing.T) {
@@ -68,7 +82,7 @@ func TestMultiple(t *testing.T) {
 		return
 	}
 	f2, _ := NewFloat("111000.00000004")
-	fmt.Println(f.multiple(f2).String())
+	fmt.Println(f.Multiple(f2).String())
 }
 
 func TestDivide(t *testing.T) {
@@ -78,5 +92,5 @@ func TestDivide(t *testing.T) {
 		return
 	}
 	f2, _ := NewFloat("111000.00000004")
-	fmt.Println(f.divide(f2).String())
+	fmt.Println(f.Divide(f2).String())
 }

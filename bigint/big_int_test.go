@@ -8,7 +8,14 @@ import (
 func TestNewInt(t *testing.T) {
 	s, err := NewInt("3473892658465897239748365838758137583658368596")
 	fmt.Println(err)
-	fmt.Println(s.multiple(&BigInt{val: []byte("397483274")}).String())
+	fmt.Println(s.Multiple(&BigInt{val: []byte("397483274")}).String())
+}
+
+// BenchmarkName-8   	37942275	        30.61 ns/op
+func BenchmarkName(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NewInt("3473892658465897239748365838758137583658368596")
+	}
 }
 
 func TestBigInt_Add(t *testing.T) {
@@ -62,7 +69,7 @@ func TestBigInt_multiple(t *testing.T) {
 func TestMultiple(t *testing.T) {
 	a := &BigInt{val: []byte{48}}
 	b := &BigInt{val: []byte{49}}
-	res := a.multiple(b)
+	res := a.Multiple(b)
 	fmt.Println(res.String())
 }
 
@@ -129,4 +136,3 @@ func TestCompare(t *testing.T) {
 	temp2, _ := NewInt("211")
 	fmt.Println(temp.compare(temp2))
 }
-

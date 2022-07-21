@@ -1,7 +1,7 @@
 package base
 
 const (
-	NumberPoint byte = 46
+	NumberPoint  byte = 46
 	NegativeFlag byte = 45
 )
 

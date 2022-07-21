@@ -2,7 +2,6 @@ package bigint
 
 import (
 	"errors"
-	"regexp"
 )
 
 type BigInt struct {
@@ -11,17 +10,18 @@ type BigInt struct {
 }
 
 func NewInt(str string) (*BigInt, error) {
-	ok, err := regexp.MatchString("^(\\-)?[1-9][0-9]*$", str)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, errors.New("invalid number")
-	}
 	origin := []byte(str)
 	var flag bool
 	if origin[0] == 45 {
 		flag = true
+	}
+	for i, v := range origin {
+		if i == 0 {
+			continue
+		}
+		if v < 48 && v > 57 {
+			return nil, errors.New("not int number string")
+		}
 	}
 	return &BigInt{val: origin, neg: flag}, nil
 }
@@ -37,14 +37,14 @@ func (b *BigInt) IsNegative() bool {
 	return b.neg
 }
 
-func (b *BigInt) check() bool {
+func (b *BigInt) Check() bool {
 	if b.val[0] == '-' {
 		return false
 	}
 	return true
 }
 
-func (b *BigInt) add(str *BigInt) *BigInt {
+func (b *BigInt) Add(str *BigInt) *BigInt {
 	originLen := len(b.val)
 	addLen := len(str.val)
 	var resultMaxLen int
@@ -115,7 +115,7 @@ func (b *BigInt) add(str *BigInt) *BigInt {
 	return &BigInt{val: result[firstIndex:]}
 }
 
-func (b *BigInt) subtract(str *BigInt) *BigInt {
+func (b *BigInt) Subtract(str *BigInt) *BigInt {
 	var isBig bool
 	isBig = b.compare(str)
 	result := &BigInt{}
@@ -188,7 +188,7 @@ func (b *BigInt) sub(str *BigInt, str2 *BigInt) *BigInt {
 	return &BigInt{val: result[firstZero:]}
 }
 
-func (b *BigInt) multiple(str *BigInt) *BigInt {
+func (b *BigInt) Multiple(str *BigInt) *BigInt {
 	strLen := len(b.val)
 	str2Len := len(str.val)
 	temp := make([]int, strLen+str2Len)
@@ -221,7 +221,7 @@ func (b *BigInt) multiple(str *BigInt) *BigInt {
 	return &BigInt{val: res}
 }
 
-func (b *BigInt) divide(str *BigInt) *BigInt {
+func (b *BigInt) Divide(str *BigInt) *BigInt {
 	var first byte
 	var d *BigInt = &BigInt{}
 	if !b.compare(str) {
@@ -244,7 +244,7 @@ func (b *BigInt) divide(str *BigInt) *BigInt {
 			}
 		}
 
-		b = b.subtract(temp2)
+		b = b.Subtract(temp2)
 		first = b.val[0]
 		if first == '-' {
 			break
@@ -252,9 +252,9 @@ func (b *BigInt) divide(str *BigInt) *BigInt {
 			if realLen != 0 {
 				var one = &BigInt{val: []byte{49}}
 				var add = one.powBase10(realLen)
-				d = d.add(add)
+				d = d.Add(add)
 			} else {
-				d = d.add(&BigInt{val: []byte{byte(49)}})
+				d = d.Add(&BigInt{val: []byte{byte(49)}})
 			}
 		}
 	}
@@ -264,7 +264,7 @@ func (b *BigInt) divide(str *BigInt) *BigInt {
 	return d
 }
 
-func (b *BigInt) module(str *BigInt) *BigInt {
+func (b *BigInt) Mod(str *BigInt) *BigInt {
 	var first byte
 	var d int = 0
 	var mod *BigInt = b
@@ -286,7 +286,7 @@ func (b *BigInt) module(str *BigInt) *BigInt {
 			}
 		}
 
-		b = b.subtract(temp2)
+		b = b.Subtract(temp2)
 		first = b.val[0]
 		if first == '-' {
 			break
