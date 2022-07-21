@@ -1,15 +1,15 @@
 # bmath
 math method about big numbers, such as add, sub, multiple, divide, module, fast pow.
-Now, only integer number into account. Also, there are some methods about RSA.
+Now, only integer number into account.
 
 # Install
-```
+```shell
 go get github.com/jiaohu/bmath
 ```
 
 
 # Example
-```
+```go
 import (
 	"fmt"
         "github.com/jiaohu/bmath"
