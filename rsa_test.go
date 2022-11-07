@@ -1,8 +1,8 @@
 package bmath
 
 import (
-	"bmath/bigint"
 	"fmt"
+	"github.com/jiaohu/bmath/bigint"
 	"testing"
 )
 
