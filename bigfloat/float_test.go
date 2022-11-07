@@ -16,17 +16,9 @@ func TestNewFloat(t *testing.T) {
 	fmt.Println(f.neg)
 }
 
-// BenchmarkName-8   	  232155	      5137 ns/op
-func BenchmarkName(b *testing.B) {
+func BenchmarkNewFloat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		NewFloat("-111000.0000003")
-	}
-}
-
-// BenchmarkName2-8   	28090694	        42.65 ns/op
-func BenchmarkName2(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		NewFloat2("-111000.0000003")
 	}
 }
 

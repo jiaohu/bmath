@@ -1,5 +1,6 @@
 package bigfloat
 
+// Add operate +
 func Add(str *BigFloat, str2 *BigFloat) *BigFloat {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -21,7 +22,7 @@ func Add(str *BigFloat, str2 *BigFloat) *BigFloat {
 	}
 }
 
-// operator -
+// Subtract operator -
 func Subtract(str *BigFloat, str2 *BigFloat) *BigFloat {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -42,7 +43,7 @@ func Subtract(str *BigFloat, str2 *BigFloat) *BigFloat {
 	return nil
 }
 
-// operator *
+// Multiple operator *
 func Multiple(str *BigFloat, str2 *BigFloat) *BigFloat {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()

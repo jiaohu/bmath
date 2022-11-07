@@ -1,6 +1,6 @@
 package bigint
 
-// operator +
+// Add operator +
 func Add(str *BigInt, str2 *BigInt) *BigInt {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -22,7 +22,7 @@ func Add(str *BigInt, str2 *BigInt) *BigInt {
 	}
 }
 
-// operator -
+// Subtract operator -
 func Subtract(str *BigInt, str2 *BigInt) *BigInt {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -43,7 +43,7 @@ func Subtract(str *BigInt, str2 *BigInt) *BigInt {
 	return nil
 }
 
-// operator *
+// Multiple operator *
 func Multiple(str *BigInt, str2 *BigInt) *BigInt {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -69,7 +69,7 @@ func Multiple(str *BigInt, str2 *BigInt) *BigInt {
 	return nil
 }
 
-// operator /
+// Divide operator /
 func Divide(str *BigInt, str2 *BigInt) *BigInt {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -95,7 +95,7 @@ func Divide(str *BigInt, str2 *BigInt) *BigInt {
 	return nil
 }
 
-// operator %
+// Module operator %
 func Module(str *BigInt, str2 *BigInt) *BigInt {
 	isStrBigThanZero := str.Check()
 	isStr2BigThanZero := str2.Check()
@@ -124,7 +124,7 @@ func Module(str *BigInt, str2 *BigInt) *BigInt {
 	return nil
 }
 
-// fast Mod (a ^ b) mod n
+// FastPow fast Mod (a ^ b) mod n
 func FastPow(a *BigInt, b *BigInt, n *BigInt) *BigInt {
 	var r *BigInt = &BigInt{val: []byte("0")}
 	x := a
